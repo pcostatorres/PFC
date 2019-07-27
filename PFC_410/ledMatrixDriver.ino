@@ -1,10 +1,36 @@
 #include "font.h"
+#include "ledMatrixDriver.h"
 
 int scroll_horizontal = 0;
 int scroll_vertical = 0;
 int c = 1;
+int delayTime = 0;
+unsigned long timeStamp = 0;
 
 int displayRGB [NLIN_MEM][NCOL_MEM];
+int arrayTx[SELECT][SIZEARRAY];
+
+void ledMatrixInit(){
+
+  pinMode(SCLK_PIN,OUTPUT);
+  pinMode(R1,OUTPUT);
+  pinMode(G1,OUTPUT);
+  pinMode(B1,OUTPUT);
+  pinMode(R2,OUTPUT);
+  pinMode(G2,OUTPUT);
+  pinMode(B2,OUTPUT);
+  
+  pinMode(OE,OUTPUT);
+  pinMode(LAT,OUTPUT);
+  
+  pinMode(SELA, OUTPUT);
+  pinMode(SELB, OUTPUT);
+  pinMode(SELC, OUTPUT);
+  pinMode(SELD, OUTPUT);
+  digitalWrite(OE,0);
+  digitalWrite(LAT,1);
+  clearDisplay();
+}
 
 const int convTable[NLIN][NCOL] = {
 {0<<8|56,0<<8|57,0<<8|58,0<<8|59,0<<8|60,0<<8|61,0<<8|62,0<<8|63,0<<8|40,0<<8|41,0<<8|42,0<<8|43,0<<8|44,0<<8|45,0<<8|46,0<<8|47,0<<8|24,0<<8|25,0<<8|26,0<<8|27,0<<8|28,0<<8|29,0<<8|30,0<<8|31,0<<8|8,0<<8|9,0<<8|10,0<<8|11,0<<8|12,0<<8|13,0<<8|14,0<<8|15},
@@ -118,3 +144,36 @@ void displayDriver(){
     delay(1/10);       
   } 
 }
+
+void serialWritting(int *high,int *low){
+  for(int i=SIZEARRAY-1; i>=0 ;i--){
+
+     digitalWrite(R1,(high[i]&1)!=0?1:0);
+     digitalWrite(R2,(low[i]&1)!=0?1:0);    
+
+     digitalWrite(G1,(high[i]&2)!=0?1:0);
+     digitalWrite(G2,(low[i]&2)!=0?1:0);    
+     
+     digitalWrite(B1,(high[i]&4)!=0?1:0);
+     digitalWrite(B2,(low[i]&4)!=0?1:0);    
+     
+     digitalWrite(SCLK_PIN,1);
+     digitalWrite(SCLK_PIN,0); 
+     delay(delayTime);
+  }  
+}
+
+void scrollDisplay(){
+  if(timeStamp<millis()){ 
+      //changeColor(c++);
+      timeStamp = millis()+500;
+      scroll_horizontal=scroll_horizontal==0?NCOL_MEM-NCOL:scroll_horizontal-1;
+      scroll_horizontal=scroll_horizontal<0?NCOL_MEM-NCOL:scroll_horizontal;
+
+      scroll_vertical=scroll_vertical==0?NLIN_MEM-NLIN:scroll_vertical-1;
+      scroll_vertical=scroll_vertical<0?NLIN_MEM-NLIN:scroll_vertical;
+      displayMem();
+      
+    }
+    displayDriver();
+}    

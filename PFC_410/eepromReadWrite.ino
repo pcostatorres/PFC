@@ -1,9 +1,10 @@
+#include "wifiCode.h"
+
 #define EEPROM_SIZE 66
 #define EEPROM_SSID 0
 #define EEPROM_PASS 32
 
 char EEPROMBuf[EEPROM_SIZE];
-
 
 void eepromRead(){
 //Leitura EEPROM
@@ -14,7 +15,7 @@ void eepromRead(){
     EEPROMBuf[i]=byte(EEPROM.read(i));
   }
 
-  memcpy(ssid, &EEPROMBuf[5], EEPROMBuf[EEPROM_SIZE-2]); 
+  memcpy(ssid, &EEPROMBuf[0], EEPROMBuf[EEPROM_SIZE-2]); 
   memcpy(password, &EEPROMBuf[32],EEPROMBuf[EEPROM_SIZE-1]);
 
 }

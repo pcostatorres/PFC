@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include "ledMatrixDriver.h"
 
 void sendPage(WiFiClient *client){
 // send a standard http response header
@@ -28,11 +29,11 @@ boolean hasGet(char *buf){
 }
 
 void parseRequest(char *buf, WiFiClient *client){
-    if(strcmp(linebuf, "GET / HTTP/1.1\r\n")){
+    if(strcmp(buf, "GET / HTTP/1.1\r\n")){
         clearDisplay();    
         //Serial.printf(" Parsing %s", linebuf);
-        char *param1 = strstr(linebuf, "Linha1=") + 7;
-        char *param2 = strstr(linebuf, "Linha2=") + 7;
+        char *param1 = strstr(buf, "Linha1=") + 7;
+        char *param2 = strstr(buf, "Linha2=") + 7;
 
         char *end = strstr(param1, "&");
         *end = '\0';  // Terminador
