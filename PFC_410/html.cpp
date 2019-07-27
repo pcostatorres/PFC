@@ -1,3 +1,5 @@
+#include <WiFi.h>
+
 void sendPage(WiFiClient *client){
 // send a standard http response header
   client->println("HTTP/1.1 200 OK");

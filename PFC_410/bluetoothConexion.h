@@ -9,9 +9,9 @@ void connectUsingBT(){
   
   SerialBT.print("Credentials");
 
-  switch (var){
+/*  switch (var
     case S
-  }
+  }*/
   int flag=0;
   while(flag!=2){
     if(SerialBT.available()){

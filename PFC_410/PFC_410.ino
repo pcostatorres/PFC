@@ -8,7 +8,7 @@
 #include "bluetoothConexion.h"
 #include "EEPROM.h"
 #include "eepromReadWrite.h"
-#include "html.h"
+//#include "html.h"
 
 //auto include .c arduino
 
