@@ -5,12 +5,14 @@
 #include "bluetoothConexion.h"
 #include "EEPROM.h"
 
-#define RETRIES 30
+#define RETRIES 20
 
 WiFiServer server(80);
 
 char linebuf[80];
 int retries = RETRIES;
+bool useBT=false;
+bool con = false;
                                                    
 void setup() {
   // put your setup code here, to run once:
@@ -21,29 +23,38 @@ void setup() {
   SerialBT.begin("PFC410"); //Bluetooth device name
 
   ledMatrixInit();
-   
-  // We start by connecting to a WiFi network 
-  wifiBegin();
-
-  // attempt to connect to Wifi network:
-  while(WiFi.status() != WL_CONNECTED & retries>0){
-    // Connect to WPA/WPA2 network.
-    delay(500);
-    Serial.print(".");
-    retries--;
-  }
-
-  if(retries==0){
+ 
+  while(!con){    
+    // We start by connecting to a WiFi network 
+    wifiBegin();
+     
+    // attempt to connect to Wifi network:
+    while(WiFi.status() != WL_CONNECTED && retries>0){
+      // Connect to WPA/WPA2 network.
+      delay(500);
+      Serial.print(".");
+      retries--;
+    }  
+    
+    if(retries==0){
       Serial.println("The device started, now you can pair it with bluetooth!");  
       Serial.print("\nConexion not achieved, insert SSID and Pass");
-      connectUsingBT();
+      useBT=connectUsingBT();
+      if(useBT){
+        con = true;
+        Serial.println("Using Bluetooth connection");
+      }
       retries = RETRIES;
-    }
+    }else 
+      con = true;
+  }
   
+  if(!useBT){
+    wifiConexionInfo(&server);
+    eepromWrite();
+  }
 
-  wifiConexion(server);
-
-  eepromWrite();
+  
 }
 
 void loop() {
@@ -74,7 +85,7 @@ if (client) {
  
             if(c=='\n'){
                 currentLineIsBlank = true;
-                //Serial.printf("Comeca aqui", linebuf);
+                Serial.printf("Comeca aqui", linebuf);
                 if(hasGet(linebuf)){
                     parseRequest(linebuf, &client);                
                 }

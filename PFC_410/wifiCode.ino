@@ -28,11 +28,11 @@ void wifiBegin(){
   WiFi.begin(ssid, password);
 }
 
-void wifiConexion(WiFiServer server){
+void wifiConexionInfo(WiFiServer *server){
 
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
-  server.begin();
+  server->begin();
   Serial.println(WiFi.localIP()); 
 }
