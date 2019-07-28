@@ -4,8 +4,6 @@ BluetoothSerial SerialBT;
 
 bool connectUsingBT(){
 
-  //utilizar security code
-  //ssid + pass usar carater final com
   char buf[32];
   
   while(!SerialBT.hasClient());
@@ -15,8 +13,10 @@ bool connectUsingBT(){
   int flag=0;
   
   while(flag!=3){
+    //connectionStatus(1);
   
-    if(SerialBT.available()){
+    while(SerialBT.available()){
+      //connectionStatus(1);
       String nom = SerialBT.readStringUntil('\n');
       int len = nom.length();
       nom.toCharArray(buf , len);
@@ -25,7 +25,6 @@ bool connectUsingBT(){
        
         memcpy(ssid,buf+4,len-4);
         flag+=1;
-        //Serial.println("Valor inserido");
       }
       else if(memcmp("PASS", buf, 4)==0){
         memcpy(password,buf+4,len-4);
@@ -36,7 +35,6 @@ bool connectUsingBT(){
         return false;      
       }
       else if(memcmp("BLUE", buf, 4)==0){
-        //Serial.println("Valor inserido");
         return true;
       }  
     }
@@ -45,9 +43,20 @@ bool connectUsingBT(){
  
 }
 
-void processBT(){
+/*bool initBT(bool useBT){
+
+  SerialBT.begin("PFC410"); //Bluetooth device name
+  Serial.println("\nThe device started, now you can pair it with bluetooth!");  
+  Serial.print("\nConexion not achieved, insert SSID and Pass\n");
   
-  char buf[32];
+  useBT = connectUsingBT();
+  
+  return useBT;
+}*/
+
+bool processBT(){
+  
+  char buf[100];
   
   if(SerialBT.available()){
     
@@ -57,22 +66,30 @@ void processBT(){
     int len = nom.length();
     nom.toCharArray(buf , len);
     
-  
     clearDisplay();    
     char *param1 = strstr(buf, "Linha1=") + 7;
     char *param2 = strstr(buf, "Linha2=") + 7;
-  
+    char *param3 = strstr(buf, "Cor1=") + 5;
+    char *param4 = strstr(buf, "Cor2=") + 5;
+    
     char *end = strstr(param1, "&");
     *end = '\0';  // Terminador
     end = strstr(param2, "&");
     *end = '\0';
-  
-    Serial.printf("Parametro 1: %s\n", param1);
-    Serial.printf("Parametro 2: %s\n", param2);
-    drawtext(0,0,param1,7);
-    drawtext(0,8,param2,2);    
+    end = strstr(param3, "#");
+    *end = '\0';
+    end = strstr(param4, "#");
+    *end = '\0';
+
+    int cor1 = atoi(param3);
+    int cor2 = atoi(param4);
+    
+    drawtext(0,0,param1,cor1);
+    drawtext(0,8,param2,cor2);  
+    //Linha1=TESTE&Linha2=teste&Cor1=1#Cor2=6#
 
   }
   scrollDisplay();
+  return true;
   
 }

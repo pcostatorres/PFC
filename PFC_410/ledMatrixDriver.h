@@ -27,6 +27,7 @@
 #define SIZEARRAY 64
 #define SELECT 8
 
+extern int displayRGB [NLIN_MEM][NCOL_MEM];
 extern int scroll_horizontal;
 extern int scroll_vertical;
 
@@ -37,6 +38,6 @@ void changeColor(int);
 void activeLine(int );
 int drawchar(int, int,int, int);
 void drawtext(int , int , char* ,int );
-void displayDriver();
+void displayDriver(void*);
 void serialWritting(int *,int *);
 void scrollDisplay();

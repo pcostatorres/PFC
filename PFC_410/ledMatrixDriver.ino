@@ -130,19 +130,28 @@ void drawtext(int x, int y, char *text,int color){
   displayMem();
 }
 
-void displayDriver(){
+void displayDriver(void* param){
+  TickType_t xLastWakeTime;
+  const TickType_t xFrequency = 1;
 
-  for(int i=0;i<4;i++){
-    
-    digitalWrite(OE,1);
-    digitalWrite(LAT,0);
-    serialWritting(arrayTx[i],arrayTx[i+4]);
-    digitalWrite(LAT,1);
-    activeLine(i);
-    digitalWrite(OE,0);   
-    //activeLine(i);
-    delay(1/10);       
-  } 
+  // Initialise the xLastWakeTime variable with the current time.
+  xLastWakeTime = xTaskGetTickCount();
+  while(true){
+    for(int i=0;i<4;i++){
+      
+      digitalWrite(OE,1);
+      digitalWrite(LAT,0);
+      serialWritting(arrayTx[i],arrayTx[i+4]);
+      digitalWrite(LAT,1);
+      activeLine(i);
+      digitalWrite(OE,0);   
+      delay(1/10);      
+      // Wait for the next cycle.
+      vTaskDelayUntil( &xLastWakeTime, xFrequency );
+       
+    } 
+  }
+  vTaskDelete( NULL );
 }
 
 void serialWritting(int *high,int *low){
@@ -175,5 +184,5 @@ void scrollDisplay(){
       displayMem();
       
     }
-    displayDriver();
+    //displayDriver();
 }    

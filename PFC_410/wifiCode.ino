@@ -2,19 +2,15 @@
 #include "ledMatrixDriver.h"
  
 // Replace with your network credentials
-//char* ssid     = "MEO-8E93A0";
-//char* password = "0cb4dc7f2b";
+//char* ssid     = "SSIDMEO-8E93A0";
+//char* password = "PASS0cb4dc7f2b";
 
 //const char* ssid     = "Paulo Neves";
 //const char* password = "bx3w7zh5d1x0n";
 
-//const char* ssid     = "Paulo Neves";
-//const char* password = "ppssttoo";
-
 char ssid[32];
 char password[32];
- 
- 
+char linebuf[80];
 // Client variables 
 
 void wifiBegin(){
@@ -31,12 +27,14 @@ void wifiBegin(){
 
 void wifiConexionInfo(WiFiServer *server){
 
+  connectionDisplayStatus(0,0,5);
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   server->begin();
   Serial.println(WiFi.localIP()); 
 }
+
 
 void sendPage(WiFiClient *client){
 // send a standard http response header
@@ -65,10 +63,10 @@ boolean hasGet(char *buf){
     return true;    
 }
 
-void parseRequest(char *buf, WiFiClient *client){
+void parseRequest(char *buf){
     if(strcmp(buf, "GET / HTTP/1.1\r\n")){
         clearDisplay();    
-        //Serial.printf(" Parsing %s", linebuf);
+        
         char *param1 = strstr(buf, "Linha1=") + 7;
         char *param2 = strstr(buf, "Linha2=") + 7;
 
@@ -84,8 +82,13 @@ void parseRequest(char *buf, WiFiClient *client){
     }        
 }
 
-void wifiProcess(){
+bool wifiProcess(){
 
+  if(WiFi.status() != WL_CONNECTED){
+      Serial.println("Connection Lost!");
+      return false;
+  }
+    
   // listen for incoming clients
   WiFiClient client = server.available();
   if (client) {
@@ -115,7 +118,7 @@ void wifiProcess(){
                   currentLineIsBlank = true;
                   //Serial.printf("Comeca aqui", linebuf);
                   if(hasGet(linebuf)){
-                      parseRequest(linebuf, &client);                
+                      parseRequest(linebuf);                
                   }
                   memset(linebuf,0,sizeof(linebuf));
               }
@@ -135,4 +138,12 @@ void wifiProcess(){
     Serial.println("client disconnected");
       
     }
+    return true;
+}
+
+void connectionDisplayStatus(int x, int y, int color){
+
+    displayRGB[x][y] = color;
+    displayMem();
+    //displayDriver(); 
 }
