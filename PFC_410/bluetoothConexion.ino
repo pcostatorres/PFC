@@ -1,4 +1,5 @@
 #include "wifiCode.h"
+bool hasText = false;
 
 BluetoothSerial SerialBT;
 
@@ -13,10 +14,9 @@ bool connectUsingBT(){
   int flag=0;
   
   while(flag!=3){
-    //connectionStatus(1);
   
     while(SerialBT.available()){
-      //connectionStatus(1);
+
       String nom = SerialBT.readStringUntil('\n');
       int len = nom.length();
       nom.toCharArray(buf , len);
@@ -43,34 +43,36 @@ bool connectUsingBT(){
  
 }
 
-/*bool initBT(bool useBT){
-
-  SerialBT.begin("PFC410"); //Bluetooth device name
-  Serial.println("\nThe device started, now you can pair it with bluetooth!");  
-  Serial.print("\nConexion not achieved, insert SSID and Pass\n");
-  
-  useBT = connectUsingBT();
-  
-  return useBT;
-}*/
+char *chrinstr(const char *str, char c, char len) {
+  if (str == NULL) return 0;
+  while (*str) {
+    if (*str == c)
+      break;
+    str += 1;
+    if((--len) == 0)
+      return NULL;
+  }
+  return (char*)str;
+}
 
 bool processBT(){
   
   char buf[100];
-  
+
   if(SerialBT.available()){
     
     memset(buf,0,sizeof(buf));
-    Serial.println("Conectado3");
+    
     String nom = SerialBT.readStringUntil('\n');
     int len = nom.length();
     nom.toCharArray(buf , len);
-    
+    Serial.print("Con 1");
     clearDisplay();    
     char *param1 = strstr(buf, "Linha1=") + 7;
     char *param2 = strstr(buf, "Linha2=") + 7;
     char *param3 = strstr(buf, "Cor1=") + 5;
     char *param4 = strstr(buf, "Cor2=") + 5;
+    Serial.print("Con 2");
     
     char *end = strstr(param1, "&");
     *end = '\0';  // Terminador
@@ -80,16 +82,20 @@ bool processBT(){
     *end = '\0';
     end = strstr(param4, "#");
     *end = '\0';
-
+    
+    Serial.print("Con 3");
+    
     int cor1 = atoi(param3);
     int cor2 = atoi(param4);
     
     drawtext(0,0,param1,cor1);
     drawtext(0,8,param2,cor2);  
+    hasText = true;
     //Linha1=TESTE&Linha2=teste&Cor1=1#Cor2=6#
 
   }
-  scrollDisplay();
+  if(hasText) scrollDisplay();
+  
   return true;
   
 }

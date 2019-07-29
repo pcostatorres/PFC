@@ -130,9 +130,9 @@ void drawtext(int x, int y, char *text,int color){
   displayMem();
 }
 
-void displayDriver(void* param){
+void displayDriver(void * param){
   TickType_t xLastWakeTime;
-  const TickType_t xFrequency = 1;
+  const TickType_t xFrequency = 2;
 
   // Initialise the xLastWakeTime variable with the current time.
   xLastWakeTime = xTaskGetTickCount();
@@ -145,7 +145,7 @@ void displayDriver(void* param){
       digitalWrite(LAT,1);
       activeLine(i);
       digitalWrite(OE,0);   
-      delay(1/10);      
+      //delay(1/10);      
       // Wait for the next cycle.
       vTaskDelayUntil( &xLastWakeTime, xFrequency );
        

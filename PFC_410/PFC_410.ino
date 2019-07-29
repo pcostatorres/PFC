@@ -26,7 +26,6 @@ bool connectionInit(){
       // Connect to WPA/WPA2 network.
       delay(500);
       Serial.print(".");
-      //connectionStatus(1);
       retries--;
     }  
     
@@ -35,13 +34,17 @@ bool connectionInit(){
       SerialBT.begin("PFC410"); //Bluetooth device name
       Serial.println("\nThe device started, now you can pair it with bluetooth!");  
       Serial.println("Conexion not achieved, insert SSID and Pass\n");
+      //WAIT STATUS
       connectionDisplayStatus(0,1,5);
   
       useBT = connectUsingBT();
+      
+      //CONNECTING STATUS
+      connectionDisplayStatus(0,1,1);
       if(useBT){
         con = true;
         Serial.println("\nUsing Bluetooth connection");
-        connectionDisplayStatus(0,1,3);
+        connectionDisplayStatus(0,1,4);  
       }
       retries = RETRIES;
     }else 
@@ -76,6 +79,7 @@ void setup() {
   useBT = connectionInit();
   
 }
+
 
 void loop() {
   

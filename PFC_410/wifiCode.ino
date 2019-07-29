@@ -26,13 +26,13 @@ void wifiBegin(){
 }
 
 void wifiConexionInfo(WiFiServer *server){
-
-  connectionDisplayStatus(0,0,5);
+  
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   server->begin();
   Serial.println(WiFi.localIP()); 
+  connectionDisplayStatus(0,0,2);
 }
 
 
