@@ -66,24 +66,21 @@ bool processBT(){
     String nom = SerialBT.readStringUntil('\n');
     int len = nom.length();
     nom.toCharArray(buf , len);
-    Serial.print("Con 1");
+  
     clearDisplay();    
     char *param1 = strstr(buf, "Linha1=") + 7;
     char *param2 = strstr(buf, "Linha2=") + 7;
     char *param3 = strstr(buf, "Cor1=") + 5;
     char *param4 = strstr(buf, "Cor2=") + 5;
-    Serial.print("Con 2");
     
-    char *end = strstr(param1, "&");
+    char *end = strstr(param1, "$");
     *end = '\0';  // Terminador
-    end = strstr(param2, "&");
+    end = strstr(param2, "$");
     *end = '\0';
     end = strstr(param3, "#");
     *end = '\0';
     end = strstr(param4, "#");
-    *end = '\0';
-    
-    Serial.print("Con 3");
+    *end = '\0';  
     
     int cor1 = atoi(param3);
     int cor2 = atoi(param4);
@@ -91,8 +88,7 @@ bool processBT(){
     drawtext(0,0,param1,cor1);
     drawtext(0,8,param2,cor2);  
     hasText = true;
-    //Linha1=TESTE&Linha2=teste&Cor1=1#Cor2=6#
-
+    //Linha1=TESTE$Linha2=teste$Cor1=1#Cor2=6#
   }
   if(hasText) scrollDisplay();
   

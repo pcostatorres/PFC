@@ -72,7 +72,7 @@ void parseRequest(char *buf){
 
         char *end = strstr(param1, "&");
         *end = '\0';  // Terminador
-        end = strstr(param2, " ");
+        end = strstr(param2, " HTTP/1.1");
         *end = '\0';
 
         Serial.printf("Parametro 1: %s\n", param1);
