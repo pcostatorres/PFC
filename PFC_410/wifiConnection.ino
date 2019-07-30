@@ -25,7 +25,7 @@ void wifiBegin(){
   WiFi.begin(ssid, password);
 }
 
-void wifiConexionInfo(WiFiServer *server){
+void wifiConnectionInfo(WiFiServer *server){
   
   Serial.println("");
   Serial.println("WiFi connected");

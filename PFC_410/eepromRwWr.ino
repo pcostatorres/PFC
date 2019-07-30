@@ -1,4 +1,4 @@
-#include "wifiCode.h"
+#include "wifiConnection.h"
 
 #define EEPROM_SIZE 66
 #define EEPROM_SSID 0

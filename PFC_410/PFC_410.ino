@@ -1,8 +1,8 @@
 #include <WiFi.h>
 #include "ledMatrixDriver.h"
-#include "wifiCode.h"
+#include "wifiConnection.h"
 #include "BluetoothSerial.h"
-#include "bluetoothConexion.h"
+#include "bluetoothConnection.h"
 #include "EEPROM.h"
 
 #define RETRIES 20
@@ -52,7 +52,7 @@ bool connectionInit(){
   }
 
   if(!useBT){
-    wifiConexionInfo(&server);
+    wifiConnectionInfo(&server);
     eepromWrite();
   }
   return useBT;
