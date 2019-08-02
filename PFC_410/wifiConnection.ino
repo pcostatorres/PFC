@@ -13,7 +13,7 @@ char password[32];
 char linebuf[80];
 // Client variables 
 
-void wifiBegin(){
+int wifiBegin(int retries){
   
   Serial.println();
   Serial.println();
@@ -23,6 +23,15 @@ void wifiBegin(){
   Serial.print("Password "); 
   Serial.println(password); 
   WiFi.begin(ssid, password);
+
+  // attempt to connect to Wifi network:
+  while(WiFi.status() != WL_CONNECTED && retries>0){
+    // Connect to WPA/WPA2 network.
+    delay(500);
+    Serial.print(".");
+    retries--;
+  } 
+  return retries;
 }
 
 void wifiConnectionInfo(WiFiServer *server){
@@ -86,7 +95,7 @@ bool wifiProcess(){
 
   if(WiFi.status() != WL_CONNECTED){
       Serial.println("Connection Lost!");
-      return false;
+      return NCON;
   }
     
   // listen for incoming clients
@@ -138,7 +147,7 @@ bool wifiProcess(){
     Serial.println("client disconnected");
       
     }
-    return true;
+    return WIFI;
 }
 
 void connectionDisplayStatus(int x, int y, int color){

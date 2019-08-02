@@ -1,46 +1,62 @@
 #include "wifiConnection.h"
 bool hasText = false;
 
+enum { BLUE_REQ = 0, SSID_REQ, PASS_REQ, END_REQ };
+
 BluetoothSerial SerialBT;
 
 bool connectUsingBT(){
 
   char buf[32];
+
+  SerialBT.begin("PFC410"); //Bluetooth device name
+  Serial.println("\nThe device started, now you can pair it with bluetooth!");  
+  Serial.println("Conexion not achieved, insert SSID and Pass\n");
+  //WAIT STATUS
+  connectionDisplayStatus(0,1,5);  
   
   while(!SerialBT.hasClient());
     
   SerialBT.print("Credentials");
   
-  int flag=0;
+  int state=BLUE_REQ;
   
-  while(flag!=3){
+  while(state != END_REQ){
   
     while(SerialBT.available()){
 
       String nom = SerialBT.readStringUntil('\n');
       int len = nom.length();
       nom.toCharArray(buf , len);
-      
-      if(memcmp("SSID", buf, 4)==0){
-       
-        memcpy(ssid,buf+4,len-4);
-        flag+=1;
+
+      switch (state){
+
+        case BLUE_REQ:
+          if(memcmp("BLUE", buf, 4)==0){    
+            Serial.println("\nUsing Bluetooth connection");
+            connectionDisplayStatus(0,1,4);      
+            return BT;
+          }
+          else if(memcmp("SSID", buf, 4)==0){       
+            memcpy(ssid,buf+4,len-4);
+            Serial.println("Insert PASS:");
+            state=PASS_REQ;
+          }
+          break;
+          
+        case PASS_REQ:          
+          if(memcmp("PASS", buf, 4)==0){
+            memcpy(password,buf+4,len-4);
+            return WIFI;
+          }
+          break;
+        default: 
+          break;
+
       }
-      else if(memcmp("PASS", buf, 4)==0){
-        memcpy(password,buf+4,len-4);
-        flag+=1;
-      }
-      else if(memcmp("WIFI", buf, 4)==0){
-        flag+=1;
-        return false;      
-      }
-      else if(memcmp("BLUE", buf, 4)==0){
-        return true;
-      }  
-    }
-  }  
-  return false;
- 
+    }  
+  }    
+  return false; 
 }
 
 
@@ -111,6 +127,6 @@ bool processBT(){
   }
   if(hasText) scrollDisplay();
   
-  return true;
+  return BT;
   
 }

@@ -6,58 +6,31 @@
 #include "EEPROM.h"
 
 #define RETRIES 20
-bool useBT=false;
+enum processSelection{ WIFI = 0, BT, NCON};
 WiFiServer server(80);
+int connectionStatus = NCON;
 
-bool connectionInit(){
-  int retries = RETRIES; 
-  bool con = false;
-  bool useBT = false;
+void connectionInit(){
 
   connectionDisplayStatus(0,0,1);
   connectionDisplayStatus(0,1,1);
-  
-  while(!con){    
+
+  connectionStatus = WIFI;
+  while(connectionStatus == WIFI){    
     // We start by connecting to a WiFi network 
-    wifiBegin();
-
-    // attempt to connect to Wifi network:
-    while(WiFi.status() != WL_CONNECTED && retries>0){
-      // Connect to WPA/WPA2 network.
-      delay(500);
-      Serial.print(".");
-      retries--;
-    }  
-    
-    if(retries==0){
-
-      SerialBT.begin("PFC410"); //Bluetooth device name
-      Serial.println("\nThe device started, now you can pair it with bluetooth!");  
-      Serial.println("Conexion not achieved, insert SSID and Pass\n");
-      //WAIT STATUS
-      connectionDisplayStatus(0,1,5);
-  
-      useBT = connectUsingBT();
+       
+    if(wifiBegin(RETRIES) == 0){
+      connectionStatus = connectUsingBT();
       
-      //CONNECTING STATUS
-      connectionDisplayStatus(0,1,1);
-      if(useBT){
-        con = true;
-        Serial.println("\nUsing Bluetooth connection");
-        connectionDisplayStatus(0,1,4);  
-      }
-      retries = RETRIES;
-    }else 
-      con = true;
+    } else{
+      wifiConnectionInfo(&server);
+      eepromWrite();
+      break;
+    }
   }
-
-  if(!useBT){
-    wifiConnectionInfo(&server);
-    eepromWrite();
-  }
-  return useBT;
 }
-
+      //CONNECTING STATUS
+      //connectionDisplayStatus(0,1,1);
                                                    
 void setup() {
   // put your setup code here, to run once:
@@ -75,23 +48,23 @@ void setup() {
       NULL,             /* Parameter passed as input of the task */
       2,                /* Priority of the task. */
       NULL);            /* Task handle. */
-
-  useBT = connectionInit();
   
 }
-
 
 void loop() {
-  
-bool connectionStatus = false;
 
-  if(!useBT){
-    connectionStatus = wifiProcess();  
-  }else {
-    connectionStatus = processBT();
+  switch(connectionStatus){
+
+    case WIFI:
+      connectionStatus = wifiProcess();
+      break;
+    case BT:
+      connectionStatus = processBT(); 
+      //colocar acesso wifi
+      break;
+    default:
+      connectionInit();
+      break;
   }
-  if(connectionStatus == false){
-    useBT = connectionInit();
-  }
+}  
   
-}

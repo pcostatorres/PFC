@@ -9,7 +9,7 @@ char EEPROMBuf[EEPROM_SIZE];
 void eepromRead(){
 //Leitura EEPROM
   if (!EEPROM.begin(EEPROM_SIZE)){
-    Serial.println("failed to initialise EEPROM"); delay(1000000);
+    Serial.println("NCONed to initialise EEPROM"); delay(1000000);
   }
   for (int i = 0; i < EEPROM_SIZE; i++){
     EEPROMBuf[i]=byte(EEPROM.read(i));

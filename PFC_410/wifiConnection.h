@@ -2,5 +2,6 @@
 extern char ssid[32];
 extern char password[32];
 
-void wifiBegin();
+int wifiBegin(int);
 void wifiConnectionInfo(WiFiServer*);
+void connectionDisplayStatus(int , int , int );
