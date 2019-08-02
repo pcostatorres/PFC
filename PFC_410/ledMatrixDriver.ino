@@ -184,5 +184,4 @@ void scrollDisplay(){
       displayMem();
       
     }
-    //displayDriver();
 }    

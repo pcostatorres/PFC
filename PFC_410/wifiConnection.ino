@@ -1,5 +1,6 @@
 #include <WiFi.h>
 #include "ledMatrixDriver.h"
+#include "utils.h"
  
 // Replace with your network credentials
 //char* ssid     = "SSIDMEO-8E93A0";
@@ -75,19 +76,10 @@ boolean hasGet(char *buf){
 void parseRequest(char *buf){
     if(strcmp(buf, "GET / HTTP/1.1\r\n")){
         clearDisplay();    
-        
-        char *param1 = strstr(buf, "Linha1=") + 7;
-        char *param2 = strstr(buf, "Linha2=") + 7;
+        int len = strlen(buf);
 
-        char *end = strstr(param1, "&");
-        *end = '\0';  // Terminador
-        end = strstr(param2, " HTTP/1.1");
-        *end = '\0';
-
-        Serial.printf("Parametro 1: %s\n", param1);
-        Serial.printf("Parametro 2: %s\n", param2);
-        drawtext(0,0,param1,7);
-        drawtext(0,8,param2,2);
+        parseAndPrint(chrInStr(buf,'?',len), len);
+       
     }        
 }
 
@@ -154,5 +146,4 @@ void connectionDisplayStatus(int x, int y, int color){
 
     displayRGB[x][y] = color;
     displayMem();
-    //displayDriver(); 
 }

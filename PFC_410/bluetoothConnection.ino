@@ -1,4 +1,7 @@
 #include "wifiConnection.h"
+#include "utils.h"
+#define DEFAULTCOLOR 1
+#define BUFFERSIZE 100
 bool hasText = false;
 
 enum { BLUE_REQ = 0, SSID_REQ, PASS_REQ, END_REQ };
@@ -60,38 +63,9 @@ bool connectUsingBT(){
 }
 
 
-char *extractParameterValue(char *query, char *param, char *value, char len){
-  char *ptr;
-  char i;
-
-  //Serial.println(query);
-  if(query == NULL || param == NULL || value == NULL)
-    return NULL;
-  // Find param
-  ptr = strstr(query, param);
-  if(ptr == NULL || ptr >= query + len )
-    return NULL;
-    
-  // skip param
-  while(*ptr++ != '='){
-    if(ptr == query + len)
-      return NULL;
-  }
-      
-  // copy value
-  i = 0;
-  while(*ptr != '&' && *ptr != '#' && ptr != query + len){
-    *(value + i++) = *ptr++;
-  }
-  // end string
-  *(value + i) = '\0';
-  return value;
-}
-
 bool processBT(){
   
-  char buf[100];
-  char value[sizeof(buf)];
+  char buf[BUFFERSIZE];
 
   if(SerialBT.available()){
     
@@ -103,24 +77,7 @@ bool processBT(){
   
     clearDisplay();   
 
-    if(extractParameterValue(buf,"Cor1",value,sizeof(buf))==NULL){  
-      Serial.println("Falha a obter parametro Cor 1");
-    }
-    int cor1 = atoi(value);
-    
-    if(extractParameterValue(buf,"Cor2",value,sizeof(buf))==NULL){  
-      Serial.println("Falha a obter parametro Cor 2");
-    }
-    int cor2 = atoi(value);
-    
-    if(extractParameterValue(buf,"Linha1",value,sizeof(buf))==NULL){  
-      Serial.println("Falha a obter parametro Linha 1");
-    }
-    drawtext(0,0,value,cor1);
-    if(extractParameterValue(buf,"Linha2",value,sizeof(buf))==NULL){  
-      Serial.println("Falha a obter parametro Linha 2");
-    }
-    drawtext(0,8,value,cor2); 
+    parseAndPrint(buf, len);  
      
     hasText = true;
     //Linha1=TESTE&Linha2=teste&Cor1=1&Cor2=6
