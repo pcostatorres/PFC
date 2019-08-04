@@ -1,5 +1,7 @@
+#include "BluetoothSerial.h"
+
 extern BluetoothSerial SerialBT;
 
-bool connectUsingBT();
-bool processBT();
+int connectUsingBT();
+int processBT();
 char *extractParameterValue(char *, char *, char *, char );

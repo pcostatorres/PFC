@@ -1,14 +1,19 @@
+#include "bluetoothConnection.h"
 #include "wifiConnection.h"
 #include "utils.h"
+//#include "textInterface.h"
+
 #define DEFAULTCOLOR 1
-#define BUFFERSIZE 100
+
+#define BUFFERSTRING 100
+
 bool hasText = false;
 
 enum { BLUE_REQ = 0, SSID_REQ, PASS_REQ, END_REQ };
 
 BluetoothSerial SerialBT;
 
-bool connectUsingBT(){
+int connectUsingBT(){
 
   char buf[32];
 
@@ -59,13 +64,13 @@ bool connectUsingBT(){
       }
     }  
   }    
-  return false; 
+  return NCON; 
 }
 
 
-bool processBT(){
+int processBT(){
   
-  char buf[BUFFERSIZE];
+  char buf[BUFFERSTRING];
 
   if(SerialBT.available()){
     
@@ -74,9 +79,14 @@ bool processBT(){
     String nom = SerialBT.readStringUntil('\n');
     int len = nom.length();
     nom.toCharArray(buf , len);
+
+    if(strcmp(buf,"WIFISTART")==0){
+      clearDisplay();
+      //SerialBT.end();
+      return NCON;
+    }
   
     clearDisplay();   
-
     parseAndPrint(buf, len);  
      
     hasText = true;

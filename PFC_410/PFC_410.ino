@@ -1,7 +1,6 @@
 #include <WiFi.h>
 #include "ledMatrixDriver.h"
 #include "wifiConnection.h"
-#include "BluetoothSerial.h"
 #include "bluetoothConnection.h"
 #include "EEPROM.h"
 
@@ -14,8 +13,8 @@ void connectionInit(){
 
   connectionDisplayStatus(0,0,1);
   connectionDisplayStatus(0,1,1);
-
   connectionStatus = WIFI;
+  
   while(connectionStatus == WIFI){    
     // We start by connecting to a WiFi network 
        

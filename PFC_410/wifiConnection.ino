@@ -1,16 +1,15 @@
 #include <WiFi.h>
 #include "ledMatrixDriver.h"
 #include "utils.h"
+
+#define LENGTH_CREDENTIALS (EEPROM_SIZE/2)
  
 // Replace with your network credentials
 //char* ssid     = "SSIDMEO-8E93A0";
 //char* password = "PASS0cb4dc7f2b";
 
-//const char* ssid     = "Paulo Neves";
-//const char* password = "bx3w7zh5d1x0n";
-
-char ssid[32];
-char password[32];
+char ssid[LENGTH_CREDENTIALS];
+char password[LENGTH_CREDENTIALS];
 char linebuf[80];
 // Client variables 
 
@@ -42,6 +41,7 @@ void wifiConnectionInfo(WiFiServer *server){
   Serial.println("IP address: ");
   server->begin();
   Serial.println(WiFi.localIP()); 
+  connectionDisplayStatus(0,1,1);
   connectionDisplayStatus(0,0,2);
 }
 
@@ -57,8 +57,8 @@ void sendPage(WiFiClient *client){
   client->println("<link rel=\"icon\" href=\"data:,\">");// escrito post favicon
   client->println("<h1>ESP32 - Web Server</h1>");
   client->println("<form action=\"\">");
-  client->println("Linha1: <input type=\"text\" name=\"Linha1\" value=\"BABA\"><br>");
-  client->println("Linha2: <input type=\"text\" name=\"Linha2\" value=\"Text\"><br>");
+  client->println("Linha1: <input type=\"text\" name=\"Linha1\" value=\"\"><br>");
+  client->println("Linha2: <input type=\"text\" name=\"Linha2\" value=\"\"><br>");
   client->println("<input type=\"submit\" value=\"Submit\">");
   //client->println("Cor Linha1: <input type=\"text\" name=\"Cor Linha1\" value=\"Text\"><br>");
   client->println("</form>");
@@ -77,13 +77,13 @@ void parseRequest(char *buf){
     if(strcmp(buf, "GET / HTTP/1.1\r\n")){
         clearDisplay();    
         int len = strlen(buf);
+        char c = '?';
 
-        parseAndPrint(chrInStr(buf,'?',len), len);
-       
+        parseAndPrint(chrInStr(buf,c,len), len);     
     }        
 }
 
-bool wifiProcess(){
+int wifiProcess(){
 
   if(WiFi.status() != WL_CONNECTED){
       Serial.println("Connection Lost!");

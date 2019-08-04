@@ -1,6 +1,6 @@
 
-extern char ssid[32];
-extern char password[32];
+extern char ssid[];
+extern char password[];
 
 int wifiBegin(int);
 void wifiConnectionInfo(WiFiServer*);
