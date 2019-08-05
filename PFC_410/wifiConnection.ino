@@ -1,5 +1,5 @@
 #include <WiFi.h>
-#include "ledMatrixDriver.h"
+#include "matrixDriver.h"
 #include "utils.h"
 
 #define LENGTH_CREDENTIALS (EEPROM_SIZE/2)

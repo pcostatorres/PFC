@@ -25,7 +25,7 @@ int connectUsingBT(){
   
   while(!SerialBT.hasClient());
     
-  SerialBT.print("Credentials");
+  SerialBT.print("Credentials");S
   
   int state=BLUE_REQ;
   
@@ -82,7 +82,7 @@ int processBT(){
 
     if(strcmp(buf,"WIFISTART")==0){
       clearDisplay();
-      //SerialBT.end();
+      //SerialBT.end();W
       return NCON;
     }
   

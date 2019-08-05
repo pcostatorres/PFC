@@ -1,5 +1,5 @@
 #include "font.h"
-#include "ledMatrixDriver.h"
+#include "matrixDriver.h"
 #include "textInterface.h"
 
 int delayTime = 0;
