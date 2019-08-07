@@ -79,7 +79,7 @@ void parseRequest(char *buf){
         int len = strlen(buf);
         char c = '?';
 
-        parseAndPrint(chrInStr(buf,c,len), len);     
+        commands(chrInStr(buf,c,len), len);     
     }        
 }
 
@@ -140,10 +140,4 @@ int wifiProcess(){
       
     }
     return WIFI;
-}
-
-void connectionDisplayStatus(int x, int y, int color){
-
-    displayRGB[x][y] = color;
-    displayMem();
 }

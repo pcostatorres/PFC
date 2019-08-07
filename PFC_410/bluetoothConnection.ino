@@ -25,7 +25,7 @@ int connectUsingBT(){
   
   while(!SerialBT.hasClient());
     
-  SerialBT.print("Credentials");S
+  SerialBT.print("Credentials");
   
   int state=BLUE_REQ;
   
@@ -87,7 +87,7 @@ int processBT(){
     }
   
     clearDisplay();   
-    parseAndPrint(buf, len);  
+    commands(buf, len);  
      
     hasText = true;
     //Linha1=TESTE&Linha2=teste&Cor1=1&Cor2=6

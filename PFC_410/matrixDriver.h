@@ -1,3 +1,5 @@
+#include "textInterface.h"
+
 //Output pin ESP32
 #define SCLK_PIN 4
 #define OE 15
@@ -17,8 +19,10 @@
 #define SIZEARRAY 64
 #define SELECT 8
 
+void updateDisplayMem(int [NLIN_MEM][NCOL_MEM], int , int );
+void updateDisplayMem();
 void ledMatrixInit();
-void clearDisplay();
+void clearDisplayMatrix();
 void activeLine(int );
 void displayDriver(void*);
 void serialWritting(int *,int *);
