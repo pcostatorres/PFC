@@ -82,7 +82,8 @@ int processBT(){
 
     if(strcmp(buf,"WIFISTART")==0){
       clearDisplay();
-      //SerialBT.end();W
+      //SerialBT.flush();
+      //SerialBT.end();
       return NCON;
     }
   

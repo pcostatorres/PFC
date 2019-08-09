@@ -3,7 +3,7 @@
 #include "utils.h"
 
 #define LENGTH_CREDENTIALS (EEPROM_SIZE/2)
- 
+
 // Replace with your network credentials
 //char* ssid     = "SSIDMEO-8E93A0";
 //char* password = "PASS0cb4dc7f2b";

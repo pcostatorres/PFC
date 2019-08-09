@@ -26,7 +26,7 @@ char *extractParameterValue(char *query, char *param, char *value, char len){
   return value;
 }
 
-void commands(char* buf, int len){//commands
+void commands(char* buf, int len){//parseCommands
 
   char value[len];
   int cor1 = DEFAULTCOLOR;
@@ -45,7 +45,7 @@ void commands(char* buf, int len){//commands
   }
   
   if(extractParameterValue(buf,"Linha2",value,len)!=NULL){  
-    drawtext(0,8,value,cor2);    
+    drawtext(0,8,value,cor2);
   }
   //Serial.println(buf);
 }

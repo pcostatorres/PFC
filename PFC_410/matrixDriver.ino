@@ -80,14 +80,11 @@ void activeLine(int line){
   digitalWrite(SELD,1);
   if (line == 0){
     digitalWrite(SELA,0);
-  }
-  if (line == 1){
+  }else if (line == 1){
     digitalWrite(SELB,0);
-  }
-   if (line == 2){
+  }else if (line == 2){
     digitalWrite(SELC,0);
-  } 
-  if (line == 3){
+  }else if (line == 3){
     digitalWrite(SELD,0);
   }
 }

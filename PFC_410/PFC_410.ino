@@ -57,7 +57,6 @@ void loop() {
       break;
     case BT:
       connectionStatus = processBT(); 
-      //colocar acesso wifi
       break;
     default:
       connectionInit();
