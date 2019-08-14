@@ -1,6 +1,6 @@
 #include "bluetoothConnection.h"
 #include "wifiConnection.h"
-#include "utils.h"
+#include "commands.h"
 //#include "textInterface.h"
 
 #define DEFAULTCOLOR 1
@@ -88,7 +88,7 @@ int processBT(){
     }
   
     clearDisplay();   
-    commands(buf, len);  
+    parseCommands(buf, len);  
      
     hasText = true;
     //Linha1=TESTE&Linha2=teste&Cor1=1&Cor2=6

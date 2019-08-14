@@ -1,6 +1,6 @@
 #include <WiFi.h>
 #include "matrixDriver.h"
-#include "utils.h"
+#include "commands.h"
 
 #define LENGTH_CREDENTIALS (EEPROM_SIZE/2)
 
@@ -79,15 +79,15 @@ void parseRequest(char *buf){
         int len = strlen(buf);
         char c = '?';
 
-        commands(chrInStr(buf,c,len), len);     
+        parseCommands(chrInStr(buf,c,len), len);     
     }        
 }
 
 int wifiProcess(){
 
   if(WiFi.status() != WL_CONNECTED){
-      Serial.println("Connection Lost!");
-      return NCON;
+    Serial.println("Connection Lost!");
+    return NCON;
   }
     
   // listen for incoming clients
@@ -102,8 +102,7 @@ int wifiProcess(){
     {
       if (client.available()) 
           {
-              char c = client.read();
-              //Serial.write(c);
+              char c = client.read();           
               //read char by char HTTP request
               linebuf[charcount]=c;
               if (charcount < sizeof(linebuf)-1) 

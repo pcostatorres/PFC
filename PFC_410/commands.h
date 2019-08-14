@@ -1,3 +1,3 @@
 char *extractParameterValue(char *, char *, char *, char );
-void commands(char* , int );
+void parseCommands(char* , int );
 char *chrInStr(char *, char , char );
