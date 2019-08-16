@@ -26,7 +26,7 @@ char *extractParameterValue(char *query, char *param, char *value, char len){
   return value;
 }
 
-void parseparseCommands(char* buf, int len){//parseparseparseCommands
+void parseCommands(char* buf, int len){//parseparseparseCommands
 
   char value[len];
   int cor1 = DEFAULTCOLOR;
