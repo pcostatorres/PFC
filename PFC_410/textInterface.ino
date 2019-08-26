@@ -49,7 +49,6 @@ void drawtext(int x, int y, char *text,int color){
 
 void scrollDisplay(){
   if(timeStamp<millis()){ 
-      //changeColor(c++);
       timeStamp = millis()+500;
       scroll_horizontal=scroll_horizontal==0?NCOL_MEM-NCOL:scroll_horizontal-1;
       scroll_horizontal=scroll_horizontal<0?NCOL_MEM-NCOL:scroll_horizontal;

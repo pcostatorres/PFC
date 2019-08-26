@@ -45,7 +45,7 @@ int connectUsingBT(){
             connectionDisplayStatus(0,1,4);      
             return BT;
           }
-          else if(memcmp("SSID", buf, 4)==0){       
+          else if(memcmp("SSID", buf, 4)==0){      
             memcpy(ssid,buf+4,len-4);
             Serial.println("Insert PASS:");
             state=PASS_REQ;

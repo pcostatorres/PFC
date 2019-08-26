@@ -33,10 +33,10 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
 
-  //eepromRead();
+  eepromRead();
 
   ledMatrixInit();
-  clearDisplay();
+  //clearDisplay();
 
   xTaskCreate(
       displayDriver,          /* Task function. */
