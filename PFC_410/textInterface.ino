@@ -1,5 +1,3 @@
-#include "textInterface.h"
-
 int displayRGB [NLIN_MEM][NCOL_MEM];
 int scroll_horizontal = 0;
 int scroll_vertical = 0;
