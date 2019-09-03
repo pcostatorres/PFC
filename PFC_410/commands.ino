@@ -26,23 +26,23 @@ char *extractParameterValue(char *query, char *param, char *value, char len){
   return value;
 }
 
-void parseCommands(char* buf, int len){//parseparseparseCommands
+void parseCommands(char* buf, int len){
 
   char value[len];
   int cor1 = DEFAULTCOLOR;
   int cor2 = DEFAULTCOLOR;
   
-  /*if(extractParameterValue(buf,"Cor1",value,sizeof(buf))!=NULL){  
+  if(extractParameterValue(buf,"Cor1",value,sizeof(buf))!=NULL){  
     cor1 = atoi(value);
   }
     
   if(extractParameterValue(buf,"Cor2",value,sizeof(buf))!=NULL){  
     cor2 = atoi(value);
-  }*/
+  }
   
   if(extractParameterValue(buf,"Linha1",value,len)!=NULL){  
     drawtext(0,0,value,cor1);  
-  }
+  }Serial.println(buf);
   
   if(extractParameterValue(buf,"Linha2",value,len)!=NULL){  
     drawtext(0,8,value,cor2);
