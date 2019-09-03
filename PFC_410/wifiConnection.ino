@@ -35,12 +35,21 @@ int wifiBegin(int retries){
 }
 
 void wifiConnectionInfo(WiFiServer *server){
-  
+
+  char buf[20];
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   server->begin();
   Serial.println(WiFi.localIP()); 
+
+  // INVENÇAO MINHA
+  String ip = String(WiFi.localIP());
+  int len = ip.length();
+  ip.toCharArray(buf , 4);
+  //++++++
+  drawtext(0,4,buf,1);
+  
   connectionDisplayStatus(0,1,1);
   connectionDisplayStatus(0,0,2);
 }

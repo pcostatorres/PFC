@@ -34,15 +34,18 @@ void parseCommands(char* buf, int len){
   
   if(extractParameterValue(buf,"Cor1",value,sizeof(buf))!=NULL){  
     cor1 = atoi(value);
+    Serial.println(buf);
   }
     
   if(extractParameterValue(buf,"Cor2",value,sizeof(buf))!=NULL){  
     cor2 = atoi(value);
+    Serial.println(buf);
   }
   
   if(extractParameterValue(buf,"Linha1",value,len)!=NULL){  
     drawtext(0,0,value,cor1);  
-  }Serial.println(buf);
+    Serial.println(buf);
+  }
   
   if(extractParameterValue(buf,"Linha2",value,len)!=NULL){  
     drawtext(0,8,value,cor2);
