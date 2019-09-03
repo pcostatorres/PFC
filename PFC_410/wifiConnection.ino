@@ -36,24 +36,28 @@ int wifiBegin(int retries){
 
 void wifiConnectionInfo(WiFiServer *server){
 
-  char buf[20];
+  char buf[15];
+  
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   server->begin();
   Serial.println(WiFi.localIP()); 
-
-  // INVENÇAO MINHA
-  String ip = String(WiFi.localIP());
-  int len = ip.length();
-  ip.toCharArray(buf , 4);
-  //++++++
-  drawtext(0,4,buf,1);
   
-  connectionDisplayStatus(0,1,1);
-  connectionDisplayStatus(0,0,2);
+  IPAddress ip = WiFi.localIP();
+  sprintf(buf,"%d.%d.%d.%d",ip[3],ip[2],ip[1],ip[0]);
+
+  drawtext(0,4,buf,1);
+ 
 }
 
+void sendHtmlPage(WiFiClient *client){
+int n = sizeof(htmlData);
+const char *p = htmlData;
+  while(n--){
+    client->print(*p++);
+  }
+}
 
 void sendPage(WiFiClient *client){
 // send a standard http response header
@@ -61,17 +65,7 @@ void sendPage(WiFiClient *client){
   client->println("Content-Type: text/html");
   client->println("Connection: close"); // the connection will be closed after completion of the response
   client->println();
-  client->println("<!DOCTYPE HTML><html><head>");
-  client->println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"></head>");
-  client->println("<link rel=\"icon\" href=\"data:,\">");// escrito post favicon
-  client->println("<h1>ESP32 - Web Server</h1>");
-  client->println("<form action=\"\">");
-  client->println("Linha1: <input type=\"text\" name=\"Linha1\" value=\"\"><br>");
-  client->println("Linha2: <input type=\"text\" name=\"Linha2\" value=\"\"><br>");
-  client->println("<input type=\"submit\" value=\"Submit\">");
-  //client->println("Cor Linha1: <input type=\"text\" name=\"Cor Linha1\" value=\"Text\"><br>");
-  client->println("</form>");
-  client->println("</html>");
+  sendHtmlPage(client);
 }
 
 boolean hasGet(char *buf){
@@ -146,6 +140,8 @@ int wifiProcess(){
     client.stop();
     Serial.println("client disconnected");
       
+    }else{
+      scrollDisplay();
     }
     return WIFI;
 }

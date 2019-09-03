@@ -2,7 +2,7 @@
 #define NLIN 16
 #define NCOL 32
 #define TEXT_LINES 2
-#define CHAR_LINE 7
+#define CHAR_LINE 15
 #define FONT_WIDTH 5
 #define FONT_HEIGHT 8
 #define NCOL_MEM (FONT_WIDTH+1)*CHAR_LINE

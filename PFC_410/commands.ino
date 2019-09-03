@@ -32,12 +32,12 @@ void parseCommands(char* buf, int len){
   int cor1 = DEFAULTCOLOR;
   int cor2 = DEFAULTCOLOR;
   
-  if(extractParameterValue(buf,"Cor1",value,sizeof(buf))!=NULL){  
+  if(extractParameterValue(buf,"Cor1",value,len)!=NULL){  
     cor1 = atoi(value);
     Serial.println(buf);
   }
     
-  if(extractParameterValue(buf,"Cor2",value,sizeof(buf))!=NULL){  
+  if(extractParameterValue(buf,"Cor2",value,len)!=NULL){  
     cor2 = atoi(value);
     Serial.println(buf);
   }
@@ -50,7 +50,6 @@ void parseCommands(char* buf, int len){
   if(extractParameterValue(buf,"Linha2",value,len)!=NULL){  
     drawtext(0,8,value,cor2);
   }
-  //Serial.println(buf);
 }
 
 char *chrInStr(char *str, char c, char len) {

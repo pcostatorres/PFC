@@ -1,7 +1,6 @@
 #include "bluetoothConnection.h"
 #include "wifiConnection.h"
 #include "commands.h"
-//#include "textInterface.h"
 
 #define DEFAULTCOLOR 1
 
@@ -42,7 +41,7 @@ int connectUsingBT(){
         case BLUE_REQ:
           if(memcmp("BLUE", buf, 4)==0){    
             Serial.println("\nUsing Bluetooth connection");
-            connectionDisplayStatus(0,1,4);      
+            connectionDisplayStatus(0,0,4);      
             return BT;
           }
           else if(memcmp("SSID", buf, 4)==0){      
@@ -82,8 +81,7 @@ int processBT(){
 
     if(strcmp(buf,"WIFISTART")==0){
       clearDisplay();
-      //SerialBT.flush();
-      //SerialBT.end();
+
       return NCON;
     }
   

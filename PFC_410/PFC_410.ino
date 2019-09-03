@@ -36,7 +36,6 @@ void setup() {
   //eepromRead();
 
   ledMatrixInit();
-  //clearDisplay();
 
   xTaskCreate(
       displayDriver,          /* Task function. */
