@@ -3,15 +3,13 @@
 #include "commands.h"
 
 #define LENGTH_CREDENTIALS (EEPROM_SIZE/2)
-
-// Replace with your network credentials
-//char* ssid     = "SSIDMEO-8E93A0";
-//char* password = "PASS0cb4dc7f2b";
+#define POS__LINE_IP(_V, _C) drawtext(0,4,_V,_C); 
+#define LINE_BUF 80
+#define DELAY 500
 
 char ssid[LENGTH_CREDENTIALS];
 char password[LENGTH_CREDENTIALS];
-char linebuf[80];
-// Client variables 
+char linebuf[LINE_BUF]; 
 
 int wifiBegin(int retries){
   
@@ -27,7 +25,7 @@ int wifiBegin(int retries){
   // attempt to connect to Wifi network:
   while(WiFi.status() != WL_CONNECTED && retries>0){
     // Connect to WPA/WPA2 network.
-    delay(500);
+    delay(DELAY);
     Serial.print(".");
     retries--;
   } 
@@ -45,10 +43,10 @@ void wifiConnectionInfo(WiFiServer *server){
   Serial.println(WiFi.localIP()); 
   
   IPAddress ip = WiFi.localIP();
-  sprintf(buf,"%d.%d.%d.%d",ip[3],ip[2],ip[1],ip[0]);
+  sprintf(buf,"%d.%d.%d.%d",ip[3],ip[2],ip[1],ip[0]); // Print IP no formato xxx.xxx.xxx.xxx
 
-  drawtext(0,4,buf,1);
- 
+  POS__LINE_IP(buf,RED);
+
 }
 
 void sendHtmlPage(WiFiClient *client){

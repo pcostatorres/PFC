@@ -4,8 +4,6 @@ int scroll_vertical = 0;
 unsigned long timeStamp = 0;
 int c = 1;
 
-
-//colocar na matrixLed
 void clearDisplay(){
 
   memset(displayRGB,0,sizeof(displayRGB));

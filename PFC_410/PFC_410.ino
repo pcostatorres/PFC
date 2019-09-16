@@ -3,16 +3,19 @@
 #include "wifiConnection.h"
 #include "bluetoothConnection.h"
 #include "EEPROM.h"
+#include "textInterface.h"
 
 #define RETRIES 20
+
 enum processSelection{ WIFI = 0, BT, NCON};
 WiFiServer server(80);
 int connectionStatus = NCON;
 
 void connectionInit(){
 
-  connectionDisplayStatus(0,0,1);
-  connectionDisplayStatus(0,1,1);
+  LED_STATE_COLOR(RED);
+  LED_BT_COLOR(RED);
+  
   connectionStatus = WIFI;
   
   while(connectionStatus == WIFI){    

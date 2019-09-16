@@ -19,6 +19,8 @@
 #define SIZEARRAY 64
 #define SELECT 8
 
+#define LINE_SEL 4
+
 void updateDisplayMem(int [NLIN_MEM][NCOL_MEM], int , int );
 void updateDisplayMem();
 void ledMatrixInit();

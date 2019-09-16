@@ -32,6 +32,6 @@ void eepromWrite(){
     EEPROM.write(i, EEPROMBuf[i]);  
     EEPROM.commit(); 
     EEPROMBuf[i];
-    //Serial.print(EEPROMBuf[i]);
+
   } 
 }

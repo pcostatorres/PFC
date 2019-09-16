@@ -1,10 +1,11 @@
 #include "bluetoothConnection.h"
 #include "wifiConnection.h"
 #include "commands.h"
-
-#define DEFAULTCOLOR 1
+#include "textInterface.h"
 
 #define BUFFERSTRING 100
+#define BUF_LINE 32
+#define STRING_CMP_CHAR 4
 
 bool hasText = false;
 
@@ -14,13 +15,13 @@ BluetoothSerial SerialBT;
 
 int connectUsingBT(){
 
-  char buf[32];
+  char buf[BUF_LINE];
 
   SerialBT.begin("PFC410"); //Bluetooth device name
   Serial.println("\nThe device started, now you can pair it with bluetooth!");  
   Serial.println("Conexion not achieved, insert SSID and Pass\n");
-  //WAIT STATUS
-  connectionDisplayStatus(0,1,5);  
+ 
+  LED_BT_COLOR(PINK);
   
   while(!SerialBT.hasClient());
     
@@ -39,9 +40,9 @@ int connectUsingBT(){
       switch (state){
 
         case BLUE_REQ:
-          if(memcmp("BLUE", buf, 4)==0){    
-            Serial.println("\nUsing Bluetooth connection");
-            connectionDisplayStatus(0,0,4);      
+          if(memcmp("BLUE", buf, 4)==0){    // O valor 4 refere-se ao numero de char que se pretende comparar entre as duas string
+            Serial.println("\nUsing Bluetooth connection");   
+            LED_STATE_COLOR(BLUE);   
             return BT;
           }
           else if(memcmp("SSID", buf, 4)==0){      
